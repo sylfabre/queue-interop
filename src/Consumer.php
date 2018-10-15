@@ -8,6 +8,8 @@ namespace Interop\Queue;
  * A MessageConsumer object is created by passing a Destination object
  * to a message-consumer creation method supplied by a session.
  *
+ * This consumer works only in auto acknoledgement mode hence if consumer crashes then the message is lost
+ *
  * @see https://docs.oracle.com/javaee/7/api/javax/jms/MessageConsumer.html
  */
 interface Consumer
@@ -32,12 +34,7 @@ interface Consumer
     public function receiveNoWait(): ?Message;
 
     /**
-     * Tell the MQ broker that the message was processed successfully.
+     * Requeue the message into the MQ broker.
      */
-    public function acknowledge(Message $message): void;
-
-    /**
-     * Tell the MQ broker that the message was rejected.
-     */
-    public function reject(Message $message, bool $requeue = false): void;
+    public function requeue(Message $message): void;
 }
